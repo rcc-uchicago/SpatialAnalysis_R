@@ -8,7 +8,7 @@ Instructor: Parmanand Sinha
 ---
 Introduction
 ========================================================
-R is an open-source language for statistical computing. A good way to think about R is as a core package, to which a library, consisting of additional packages, can be attached to increase its functionality. R can be downloaded for free at:
+R is an open-source language for statistical computing. A good way to think about R is as a core package, to which a p_load, consisting of additional packages, can be attached to increase its functionality. R can be downloaded for free at:
 
 https://cran.rstudio.com/
 
@@ -21,9 +21,17 @@ Basic Packages
 
 For reading and writing vector and raster data in R, the three primary packages you will use are:
 
-sf or rgdal for vector formats such as ESRI Shapefiles, GeoJSON, and GPX - both packages use OGR, which is a library under the GDAL source tree,under the hood
+sf or rgdal for vector formats such as ESRI Shapefiles, GeoJSON, and GPX - both packages use OGR, which is a p_load under the GDAL source tree,under the hood
 raster for raster formats such as GeoTIFF or ESRI or ASCII grid using GDAL under the hood
 We can quickly discover supported I/O vector formats either via sf or rgdal
+
+Packages Management
+========================================================
+```{r}
+# load the raster, sp, and rgdal packages
+install.packages("pacman")
+library("pacman")
+```
 
 Coordinate system
 ========================================================
@@ -37,7 +45,7 @@ Projection details: If projected, the mathematical equation used to flatten obje
 
 ```{r}
 setwd("~/GitHub/SpatialAnalysis_R")
-knitr::include_graphics("figure/Ellipsoid.png")
+knitr::include_graphics("./figure/Ellipsoid.png")
 ```
 
 
@@ -60,7 +68,7 @@ Tidyverse and plotting
 
 ```{r}
 
-library(tidyverse)
+p_load(tidyverse)
 ```
 
 Tidyverse and plotting
@@ -75,22 +83,70 @@ ggplot() +
 ```
 
 
+Vector data with sf
+========================================================
+sf is an implementation of Simple features, an open standard developed and endorsed by the Open Geospatial Consortium (OGC).
+
+The big difference between sf and sp is that sf uses S3 classes rather than S4 as sp does. Simple features are simple data.frame objects that have a geometry list-column. The simple feature model will be familiar to those who use PostGIS, MySQL Spatial Extensions, Oracle Spatial, the OGR component of the GDAL p_load, GeoJSON and GeoPandas in Python. 
+
+```{r}
+knitr::include_graphics("./figure/sf_deps.png")
+```
+
+```{r}
+p_load(sf)
+methods(class = 'sf')
+
+```
+
  Geoprocessing
 ======================================================== 
- typical topological operations
+```{r}
+p_load(sf)
+p_load(tigris)
+p_load(tmap)
+```
+
+```{r}
+counties <- counties("Texas", cb = TRUE)
+counties<-st_as_sf(counties)
+counties$area <- as.numeric(st_area(counties))
+glimpse(counties)
+```
+
+```{r}
+tm_shape(counties) +
+  tm_polygons("area", 
+              style="quantile", 
+              title="Texas Counties Area")
+              
+p_load(mapview)
+mapview(tex_cap, col="red", col.regions = "red") + mapview(counties, alpha.regions = .1)              
+```              
+
+
+
+ Typical topological operations
  
  
  Spatial Subsetting
 ======================================================== 
+```{r}
+ counties[NAME="Houston",]
+  
+  
+```
+
  
- 
- Spatial Join
-======================================================== 
- 
- 
+
  Dissolve
 ======================================================== 
+```{r}
+counties %>% 
+  group_by(STATEFP) %>%
+  summarise(area = sum(area))
  
+```
  
  Visualizing Spatial Data
 ========================================================
@@ -99,8 +155,8 @@ ggplot() +
 # 'Leaflet' is a package used for visualizing data on a map in R. 'Magrittr' is a package used for creating pipe operators 
 #install.packages('leaflet') # Run only if you have not yet installed `leaflet`!
 #install.packages('magrittr') # Run only if you have not yet installed `magrittr`!
-library(leaflet)
-library(magrittr)
+p_load(leaflet)
+p_load(magrittr)
 
 # Here, we create a `leaflet` object and assign it to the variable, 'm'. The 'setView' function sets the view of the map where 'lng = -0.136' sets the longitutde, 'lat = 51.513' sets the latitude and the map zoom is set to 16. The '%>%' is a pipe operator that passes the output from the left hand side of the operator to the first argument of the right hand side of the operator. In this case we are telling `R` that we want to center the map on the set longitude and latitude, with a zoom level of 16, which corresponds roughly to a neighborhood 
 
@@ -146,7 +202,7 @@ m_test <- leaflet () %>%
   addMarkers(data = snow_pumps, ~long, ~lat, group = "Pumps")
 m_test
 
-library(leaflet.extras)
+p_load(leaflet.extras)
 m2 <- leaflet(data = snow_deaths) %>% 
   setView(lng = -0.136, lat = 51.513, zoom = 16) %>% 
   addTiles()
@@ -180,36 +236,8 @@ m2_test
 
 For more information on the functionality of leaflet, please check Leaflet for R
 
-```{r}
-library(sf)
-library(tigris)
-
-counties <- counties("Texas", cb = TRUE)
-counties$area <- as.numeric(st_area(counties))
-glimpse(counties)
-
-tm_shape(counties) +
-  tm_polygons("area", 
-              style="quantile", 
-              title="Texas Counties Area")
-              
-library(mapview)
-mapview(tex_cap, col="red", col.regions = "red") + mapview(counties, alpha.regions = .1)              
-```              
 
 
-Vector data with sf
-sf is an implementation of Simple features, an open standard developed and endorsed by the Open Geospatial Consortium (OGC).
-
-The big difference between sf and sp is that sf uses S3 classes rather than S4 as sp does. Simple features are simple data.frame objects that have a geometry list-column. The simple feature model will be familiar to those who use PostGIS, MySQL Spatial Extensions, Oracle Spatial, the OGR component of the GDAL library, GeoJSON and GeoPandas in Python. 
-
-```{r}
-knitr::include_graphics("figure/sf_depn.png")
-
-library(sf)
-methods(class = 'sf')
-
-```
 
 
 
@@ -222,14 +250,6 @@ In general, R requires dataset to be loaded into memory. A notable feature of th
 
 
 
-```{r}
-# load the raster, sp, and rgdal packages
-install.packages("pacman")
-
-```
-
-    Installing package into ‘/home/nbuser/R’
-    (as ‘lib’ is unspecified)
 
 
 
@@ -246,7 +266,7 @@ install.packages("rgdal")
 
 
 
-library(pacman)
+
 p_load(rgdal)
 p_load(raster)
 p_load(sp)
