@@ -10,6 +10,5 @@ Loading and interrogating spatial data with sf
 Data manipulation with spatial data using dplyr
 Spatial operations such as intersections
 Interactive maps with leaflet
+
 Level: Introductory
-
-
