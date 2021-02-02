@@ -5,10 +5,14 @@ The size of spatial data sets continues to grow, and advanced tools for their an
 
 Objectives:
 
-The structure of spatial objects in R
-Loading and interrogating spatial data with sf
-Data manipulation with spatial data using dplyr
-Spatial operations such as intersections
-Interactive maps with leaflet
+ The structure of spatial objects in R
+ 
+ Loading and interrogating spatial data with sf
+ 
+ Data manipulation with spatial data using dplyr
+ 
+ Spatial operations such as intersections
+ 
+ Interactive maps with leaflet
 
 Level: Introductory
