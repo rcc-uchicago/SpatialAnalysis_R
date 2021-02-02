@@ -54,8 +54,8 @@ Dataframe
 
 ```{r}
 #The function 'head' will display the first few rows of the dataframe, snow_deaths 
-snow_deaths<-load("./data/snow_deaths.RData")
-snow_pumps<-load("./data/snow_pumps.RData")
+snow_deaths<-read.csv("./data/snow_deaths.csv")
+snow_pumps<-read.csv("./data/snow_pumps.csv")
 
 head(snow_deaths)
 
@@ -121,7 +121,7 @@ tm_shape(counties) +
               title="Texas Counties Area")
               
 p_load(mapview)
-mapview(tex_cap, col="red", col.regions = "red") + mapview(counties, alpha.regions = .1)              
+mapview(counties, col="red", col.regions = "red") + mapview(counties, alpha.regions = .1)              
 ```              
 
 
@@ -132,7 +132,7 @@ mapview(tex_cap, col="red", col.regions = "red") + mapview(counties, alpha.regio
  Spatial Subsetting
 ======================================================== 
 ```{r}
- counties[NAME="Houston",]
+ plot(counties[counties$NAME=="Houston",1])
   
   
 ```
@@ -142,7 +142,8 @@ mapview(tex_cap, col="red", col.regions = "red") + mapview(counties, alpha.regio
  Dissolve
 ======================================================== 
 ```{r}
-counties %>% 
+
+  counties %>% 
   group_by(STATEFP) %>%
   summarise(area = sum(area))
  
@@ -242,36 +243,15 @@ For more information on the functionality of leaflet, please check Leaflet for R
 
 
 Raster Data
-
-
+========================================================
 
 In general, R requires dataset to be loaded into memory. A notable feature of the raster package is that it can work with   raster datasets that are stored on disk and are too large to be loaded into memory (RAM). 
  
-
-
-
-
-
-
 ```{r}
-install.packages("rgdal")
-```
-
-
-
-```{r}
-
-
-
-
-
-
 
 p_load(rgdal)
 p_load(raster)
-p_load(sp)
-p_load(sf)
-p_load(fasterize)
+
 ```
 download gridded population data
 
