@@ -36,8 +36,8 @@ Datum: The modeled version of the shape of the earth
 Projection details: If projected, the mathematical equation used to flatten objects from round surface (earth) to flat surface (paper or screen)
 
 ```{r}
-
-knitr::include_graphics("slides-figure/Ellipsoid.png")
+setwd("~/GitHub/SpatialAnalysis_R")
+knitr::include_graphics("figure/Ellipsoid.png")
 ```
 
 
@@ -204,7 +204,7 @@ sf is an implementation of Simple features, an open standard developed and endor
 The big difference between sf and sp is that sf uses S3 classes rather than S4 as sp does. Simple features are simple data.frame objects that have a geometry list-column. The simple feature model will be familiar to those who use PostGIS, MySQL Spatial Extensions, Oracle Spatial, the OGR component of the GDAL library, GeoJSON and GeoPandas in Python. 
 
 ```{r}
-knitr::include_graphics("slides-figure/sf_depn.png")
+knitr::include_graphics("figure/sf_depn.png")
 
 library(sf)
 methods(class = 'sf')
